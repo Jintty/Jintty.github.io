@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Math Rendering Reference · Jintty's Blog</title>
+<meta name="description" content="A working reference for everything this site needs to render — matrices, vectors, sums, piecewise definitions, plus code blocks, tables, and margin notes drawn from the same source file.">
+<meta property="og:title" content="Math Rendering Reference · Jintty's Blog">
+<meta property="og:description" content="A working reference for everything this site needs to render — matrices, vectors, sums, piecewise definitions, plus code blocks, tables, and margin notes drawn from the same source file.">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/atom+xml" title="Jintty's Blog" href="/feed.xml">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="article:published_time" content="2026-09-18">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-title" href="/">Jintty's Blog</a>
+  <nav class="site-nav">
+    <a href="/archive.html">Archive</a>
+    <a href="/tags.html">Tags</a>
+  </nav>
+</header>
+
+<main>
+<article>
+  <header class="post-header">
+    <h1>Math Rendering Reference</h1>
+<div class="post-meta"><time datetime="2026-09-18">2026-09-18</time><a class="tag" href="/tags/math.html">math</a><a class="tag" href="/tags/linear-algebra.html">linear-algebra</a></div>
+  </header>
+<nav class="toc">
+  <p class="toc-title">Contents</p>
+  <ul>
+    <li class="toc-level-2"><a href="#matrices-and-vectors">Matrices and vectors</a></li>
+    <li class="toc-level-2"><a href="#determinants">Determinants</a></li>
+    <li class="toc-level-2"><a href="#piecewise-definitions-and-limits">Piecewise definitions and limits</a></li>
+    <li class="toc-level-2"><a href="#inline-math">Inline math</a></li>
+    <li class="toc-level-2"><a href="#code-blocks">Code blocks</a></li>
+    <li class="toc-level-2"><a href="#tables">Tables</a></li>
+    <li class="toc-level-2"><a href="#lists-and-quotations">Lists and quotations</a></li>
+    <li class="toc-level-2"><a href="#task-lists">Task lists</a></li>
+    <li class="toc-level-2"><a href="#margin-notes">Margin notes</a></li>
+    <li class="toc-level-2"><a href="#images">Images</a></li>
+  </ul>
+</nav>
+<section id="matrices-and-vectors" class="level2">
+<h2>Matrices and vectors</h2>
+<p>A product of two matrices, and a column vector:</p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>4</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="2.0em"></mspace><mover><mi>v</mi><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>3</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+A = \begin{pmatrix} 1 &amp; 2 \\ 3 &amp; 4 \end{pmatrix}, \qquad
+\vec{v} = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}
+</annotation></semantics></math>
+<p>Written elementwise:</p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><msub><mi>b</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
+(AB)_{ij} = \sum_{k=1}^{n} a_{ik} b_{kj}
+</annotation></semantics></math>
+</section>
+<section id="determinants" class="level2">
+<h2>Determinants</h2>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">∣</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>d</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">∣</mo></mrow><mo>=</mo><mi>a</mi><mi>d</mi><mo>−</mo><mi>b</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">
+\det A = \begin{vmatrix} a &amp; b \\ c &amp; d \end{vmatrix} = ad - bc
+</annotation></semantics></math>
+<p>The Vandermonde determinant — deliberately wide, to exercise horizontal scrolling on narrow screens:</p>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>x</mi><mn>1</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>x</mi><mn>2</mn><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd><mtd columnalign="center" style="text-align: center"><mo>⋱</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>n</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>x</mi><mi>n</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><munder><mo>∏</mo><mrow><mn>1</mn><mo>≤</mo><mi>i</mi><mo>&lt;</mo><mi>j</mi><mo>≤</mo><mi>n</mi></mrow></munder><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>j</mi></msub><mo>−</mo><msub><mi>x</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
+\begin{pmatrix} 1 &amp; x_1 &amp; \cdots &amp; x_1^{n-1} \\ 1 &amp; x_2 &amp; \cdots &amp; x_2^{n-1} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 1 &amp; x_n &amp; \cdots &amp; x_n^{n-1} \end{pmatrix}
+= \prod_{1 \leq i &lt; j \leq n} (x_j - x_i)
+</annotation></semantics></math>
+</section>
+<section id="piecewise-definitions-and-limits" class="level2">
+<h2>Piecewise definitions and limits</h2>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><msup><mi>x</mi><mn>2</mn></msup></mtd><mtd columnalign="left" style="text-align: left"><mrow><mtext mathvariant="normal">if </mtext><mspace width="0.333em"></mspace></mrow><mi>x</mi><mo>≥</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left"><mtext mathvariant="normal">otherwise</mtext></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">
+f(x) = \begin{cases}
+x^2 &amp; \text{if } x \geq 0 \\
+-x  &amp; \text{otherwise}
+\end{cases}
+</annotation></semantics></math>
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi mathvariant="normal">lim</mi><mrow><mi>n</mi><mo>→</mo><mi>∞</mi></mrow></munder><msup><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>n</mi></msup><mo>=</mo><mi>e</mi></mrow><annotation encoding="application/x-tex">
+\lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n = e
+</annotation></semantics></math>
+</section>
+<section id="inline-math" class="level2">
+<h2>Inline math</h2>
+<p>The complexity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">𝒪</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mrow><mi mathvariant="normal">log</mi><mo>&#8289;</mo></mrow><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O}(n \log n)</annotation></semantics></math> beats <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">𝒪</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{O}(n^2)</annotation></semantics></math>. The Euclidean norm of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>v</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{v}</annotation></semantics></math> is written <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mover><mi>v</mi><mo accent="true">→</mo></mover><msub><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">\|\vec{v}\|_2</annotation></semantics></math>, and the positive reals are <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="double-struck">ℝ</mi><mrow><mo>&gt;</mo><mn>0</mn></mrow></msub><annotation encoding="application/x-tex">\mathbb{R}_{&gt;0}</annotation></semantics></math>.</p>
+<p>Note how inline math sits on the baseline without disturbing the leading of the surrounding paragraph, even when the expression is tall like <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>a</mi><mo>+</mo><mi>b</mi></mrow><mrow><mi>c</mi><mo>+</mo><mi>d</mi></mrow></mfrac><annotation encoding="application/x-tex">\frac{a+b}{c+d}</annotation></semantics></math>.</p>
+</section>
+<section id="code-blocks" class="level2">
+<h2>Code blocks</h2>
+<p>Plain, unhighlighted:</p>
+<pre><code>plain text, no highlighting</code></pre>
+<p>C:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">void</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> <span class="op">*</span>s <span class="op">=</span> <span class="st">&quot;hello&quot;</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;</span><span class="sc">%s\n</span><span class="st">&quot;</span><span class="op">,</span> s<span class="op">);</span>   <span class="co">// comment</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Rust:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode rust"><code class="sourceCode rust"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">fn</span> gcd(a<span class="op">:</span> <span class="dt">u64</span><span class="op">,</span> b<span class="op">:</span> <span class="dt">u64</span>) <span class="op">-&gt;</span> <span class="dt">u64</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> b <span class="op">==</span> <span class="dv">0</span> <span class="op">{</span> a <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span> gcd(b<span class="op">,</span> a <span class="op">%</span> b) <span class="op">}</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Shell:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">find</span> . <span class="at">-name</span> <span class="st">&#39;*.md&#39;</span> <span class="at">-exec</span> pandoc <span class="at">-t</span> html {} <span class="dt">\;</span></span></code></pre></div>
+<p>Python:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>posts <span class="op">=</span> <span class="bu">sorted</span>(Path(<span class="st">&quot;src/posts&quot;</span>).glob(<span class="st">&quot;*.md&quot;</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p <span class="kw">in</span> posts:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(p.stem, p.stat().st_size)</span></code></pre></div>
+</section>
+<section id="tables" class="level2">
+<h2>Tables</h2>
+<div class="table-wrapper"><table>
+<thead>
+<tr>
+<th>Symbol</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">det</mi><annotation encoding="application/x-tex">\det</annotation></semantics></math></td>
+<td>determinant</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">\det A</annotation></semantics></math></td>
+</tr>
+<tr>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∑</mo><annotation encoding="application/x-tex">\sum</annotation></semantics></math></td>
+<td>summation</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><mi>i</mi></mrow><annotation encoding="application/x-tex">\sum_{i=1}^n i</annotation></semantics></math></td>
+</tr>
+<tr>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>∏</mo><annotation encoding="application/x-tex">\prod</annotation></semantics></math></td>
+<td>product</td>
+<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∏</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>x</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\prod_{i=1}^n x_i</annotation></semantics></math></td>
+</tr>
+</tbody>
+</table></div>
+</section>
+<section id="lists-and-quotations" class="level2">
+<h2>Lists and quotations</h2>
+<ul>
+<li>First item
+<ul>
+<li>Nested item</li>
+</ul></li>
+<li>Second item</li>
+</ul>
+<ol type="1">
+<li>Ordered item</li>
+<li>Another item</li>
+</ol>
+<blockquote>
+<p>A quotation, the sort of thing used to set off a problem statement or someone else's words.</p>
+</blockquote>
+</section>
+<section id="task-lists" class="level2">
+<h2>Task lists</h2>
+<ul class="task-list">
+<li><label><input type="checkbox" checked="" />Verify matrix rendering</label></li>
+<li><label><input type="checkbox" checked="" />Check dark mode</label></li>
+<li><label><input type="checkbox" />Confirm horizontal scrolling on mobile</label></li>
+<li><label><input type="checkbox" />Decide whether to self-host a math font</label></li>
+</ul>
+</section>
+<section id="margin-notes" class="level2">
+<h2>Margin notes</h2>
+<p>MathML has rendered natively in Chromium since version 109<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"/><span class="sidenote">Chrome 109 shipped in January 2023, which is when MathML Core became usable in the majority browser.</span>, and reached Baseline "widely available" in July 2025<label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle"/><span class="sidenote">Baseline status means every current version of the major browsers supports the feature.</span>. That is what makes the no-JavaScript approach viable rather than merely aspirational.</p>
+</section>
+<section id="images" class="level2">
+<h2>Images</h2>
+<p><img src="example.svg" alt="A schematic curve" /></p>
+</section>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© 2026 Jintty · <a href="/feed.xml">RSS</a></p>
+  <p class="colophon">Built with <a href="https://pandoc.org/">Pandoc</a>. Layout after <a href="https://edwardtufte.github.io/tufte-css/">Tufte CSS</a> by Dave Liepmann (MIT). Text set in ET Book and STIX Two Math.</p>
+</footer>
+
+</body>
+</html>

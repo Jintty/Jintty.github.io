@@ -1,0 +1,12 @@
+{
+  "title": "Jintty's Blog",
+  "author": "Jintty",
+  "description": "Notes on systems, security, and the occasional matrix",
+  "lang": "en",
+
+  "baseUrl": "https://jintty.github.io",
+  "basePath": "",
+
+  "postsPerPage": 20,
+  "feedLimit": 20
+}

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>How This Blog Is Built · Jintty's Blog</title>
+<meta name="description" content="Markdown compiled straight to static HTML by Pandoc — no JavaScript on the client, no npm dependencies in the build, and math rendered natively via MathML.">
+<meta property="og:title" content="How This Blog Is Built · Jintty's Blog">
+<meta property="og:description" content="Markdown compiled straight to static HTML by Pandoc — no JavaScript on the client, no npm dependencies in the build, and math rendered natively via MathML.">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="/style.css">
+<link rel="alternate" type="application/atom+xml" title="Jintty's Blog" href="/feed.xml">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="article:published_time" content="2026-09-25">
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-title" href="/">Jintty's Blog</a>
+  <nav class="site-nav">
+    <a href="/archive.html">Archive</a>
+    <a href="/tags.html">Tags</a>
+  </nav>
+</header>
+
+<main>
+<article>
+  <header class="post-header">
+    <h1>How This Blog Is Built</h1>
+<div class="post-meta"><time datetime="2026-09-25">2026-09-25</time><a class="tag" href="/tags/meta.html">meta</a><a class="tag" href="/tags/pandoc.html">pandoc</a></div>
+  </header>
+<nav class="toc">
+  <p class="toc-title">Contents</p>
+  <ul>
+    <li class="toc-level-2"><a href="#the-whole-architecture">The whole architecture</a></li>
+    <li class="toc-level-2"><a href="#repository-layout">Repository layout</a></li>
+    <li class="toc-level-2"><a href="#why-pandoc">Why Pandoc</a></li>
+    <li class="toc-level-2"><a href="#how-the-build-works">How the build works</a></li>
+    <li class="toc-level-2"><a href="#the-trade-offs">The trade-offs</a></li>
+    <li class="toc-level-2"><a href="#further-reading">Further reading</a></li>
+  </ul>
+</nav>
+<section id="the-whole-architecture" class="level2">
+<h2>The whole architecture</h2>
+<pre><code>src/posts/*.md  --[pandoc]--&gt;  HTML fragment  --[build.mjs + layout]--&gt;  docs/*.html</code></pre>
+<p>The entire build dependency is <code>pandoc</code> plus a single Node script that uses nothing but the standard library. There is no <code>node_modules</code>, no bundler, no framework — and the browser receives <strong>zero JavaScript</strong>.</p>
+</section>
+<section id="repository-layout" class="level2">
+<h2>Repository layout</h2>
+<pre><code>blog/
+├── site.json                 site title, author, base URL
+├── build.mjs                 the build script
+├── filters/sidenotes.lua     footnote -&gt; margin note
+├── templates/layout.html     page skeleton
+├── assets/
+│   ├── style.css             all styling
+│   └── fonts/et-book/        the text typeface
+├── src/posts/                your Markdown
+└── docs/                     build output (published)</code></pre>
+</section>
+<section id="why-pandoc" class="level2">
+<h2>Why Pandoc</h2>
+<p>After trying the usual static site generators, this came down to three concrete properties:</p>
+<ol type="1">
+<li><strong>Math works out of the box.</strong> <code>--mathml</code> emits real MathML, which browsers have rendered natively since Chromium 109. No KaTeX, no MathJax, no half-megabyte of runtime.</li>
+<li><strong>Highlighting happens at build time.</strong> Skylighting tags each token with a class, so colour is entirely a CSS concern — which is what makes light and dark themes a single stylesheet instead of two.</li>
+<li><strong>The Markdown dialect is strong enough.</strong> GFM plus math extensions covers tables, task lists, footnotes, and definition lists, and matches what GitHub renders for the same file.</li>
+</ol>
+</section>
+<section id="how-the-build-works" class="level2">
+<h2>How the build works</h2>
+<p>Each post is compiled twice by Pandoc: once to JSON to read the front matter, once to HTML for the body. Then a handful of post-processing steps run on the output:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Block math arrives wrapped in a paragraph; unwrap it so it can be</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">// laid out at the column width rather than inheriting paragraph margins.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>html <span class="op">=</span> html<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/&lt;p&gt;</span><span class="sc">(</span><span class="ss">&lt;math display=&quot;block&quot;</span><span class="sc">[\s\S]*?</span><span class="ss">&lt;</span><span class="sc">\/</span><span class="ss">math&gt;</span><span class="sc">)</span><span class="ss">&lt;</span><span class="sc">\/</span><span class="ss">p&gt;/g</span><span class="op">,</span> <span class="st">&#39;$1&#39;</span>)<span class="op">;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Tables get a scroll container so wide ones don&#39;t break the layout on phones.</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>html <span class="op">=</span> html<span class="op">.</span><span class="fu">replace</span>(<span class="ss">/&lt;table</span><span class="sc">(\s|</span><span class="ss">&gt;</span><span class="sc">)</span><span class="ss">/g</span><span class="op">,</span> <span class="st">&#39;&lt;div class=&quot;table-wrapper&quot;&gt;&lt;table$1&#39;</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>           <span class="op">.</span><span class="fu">replace</span>(<span class="ss">/&lt;</span><span class="sc">\/</span><span class="ss">table&gt;/g</span><span class="op">,</span> <span class="st">&#39;&lt;/table&gt;&lt;/div&gt;&#39;</span>)<span class="op">;</span></span></code></pre></div>
+<p>Footnotes are converted to Tufte-style margin notes by a Lua filter, which runs inside Pandoc — so no extra tooling is involved. The filter operates on the AST rather than on rendered HTML, which means the notes end up in the correct position by construction instead of by regex surgery.</p>
+</section>
+<section id="the-trade-offs" class="level2">
+<h2>The trade-offs</h2>
+<p>Being honest about what this gives up:</p>
+<ul>
+<li><strong>No theme ecosystem.</strong> Styling is one CSS file you own end to end.</li>
+<li><strong>No built-in features.</strong> Tags, the archive, and the feed are generated by about sixty lines of string concatenation in <code>build.mjs</code>. Easy to change, and yours to maintain.</li>
+<li><strong>Pandoc's dialect is wider than GFM.</strong> Syntax that Pandoc understands but GitHub does not will render on the site and break in the repository view. Worth knowing when a post is meant to be readable in both places.</li>
+</ul>
+<blockquote>
+<p>For a personal blog, that trade buys something worth having: no build cache to clear, no plugin conflicts to debug, no major-version migration to schedule.</p>
+</blockquote>
+</section>
+<section id="further-reading" class="level2">
+<h2>Further reading</h2>
+<ul>
+<li><a href="https://pandoc.org/MANUAL.html">Pandoc manual</a></li>
+<li><a href="https://caniuse.com/mathml">MathML browser support</a></li>
+<li><a href="https://github.com/jgm/skylighting">Skylighting token classes</a></li>
+</ul>
+</section>
+
+</article>
+</main>
+
+<footer class="site-footer">
+  <p>© 2026 Jintty · <a href="/feed.xml">RSS</a></p>
+  <p class="colophon">Built with <a href="https://pandoc.org/">Pandoc</a>. Layout after <a href="https://edwardtufte.github.io/tufte-css/">Tufte CSS</a> by Dave Liepmann (MIT). Text set in ET Book and STIX Two Math.</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:type" content="{{ogType}}">
+<link rel="stylesheet" href="{{basePath}}/style.css">
+<link rel="alternate" type="application/atom+xml" title="{{siteTitle}}" href="{{basePath}}/feed.xml">
+<link rel="icon" href="{{basePath}}/favicon.svg" type="image/svg+xml">
+{{extraHead}}
+</head>
+<body>
+
+<header class="site-header">
+  <a class="site-title" href="{{basePath}}/">{{siteTitle}}</a>
+  <nav class="site-nav">
+    <a href="{{basePath}}/archive.html">Archive</a>
+    <a href="{{basePath}}/tags.html">Tags</a>
+  </nav>
+</header>
+
+<main>
+{{content}}
+</main>
+
+<footer class="site-footer">
+  <p>© {{year}} {{siteAuthor}} · <a href="{{basePath}}/feed.xml">RSS</a></p>
+  <p class="colophon">Built with <a href="https://pandoc.org/">Pandoc</a>. Layout after <a href="https://edwardtufte.github.io/tufte-css/">Tufte CSS</a> by Dave Liepmann (MIT). Text set in ET Book and STIX Two Math.</p>
+</footer>
+
+</body>
+</html>

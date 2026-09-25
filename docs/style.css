@@ -1,0 +1,743 @@
+@charset "UTF-8";
+
+/* ===========================================================================
+   Jintty's Blog — 站点样式
+   ---------------------------------------------------------------------------
+   布局基于 Tufte CSS
+     https://edwardtufte.github.io/tufte-css/
+     Copyright (c) 2014 Dave Liepmann · MIT License
+
+   在此之上做了四件事：
+     1. 把硬编码颜色改为 CSS 变量，使明暗主题完整可用
+     2. 字体栈补上中文衬线（ET Book 仅覆盖拉丁字符）
+     3. 补 Tufte CSS 未提供的代码高亮与 MathML 样式
+     4. 补博客所需的站点结构（页头、归档、标签、目录、页脚）
+
+   字体与来源：
+     ET Book            自托管（assets/fonts/et-book/），随 Tufte CSS 以 MIT 发布
+     STIX Two Math      仅按名称引用，不随站点分发
+                        Copyright 2001–2021 The STIX Fonts Project Authors
+                        SIL Open Font License 1.1
+     Iosevka Curly Slab 仅按名称引用，不随站点分发
+     Noto Serif CJK SC  仅按名称引用，不随站点分发
+   =========================================================================== */
+
+/* ------------------------------------------------------------------ 字体 */
+
+@font-face {
+  font-family: et-book;
+  src: url("fonts/et-book/et-book-roman-line-figures.woff") format("woff");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: et-book;
+  src: url("fonts/et-book/et-book-display-italic-old-style-figures.woff") format("woff");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: et-book;
+  src: url("fonts/et-book/et-book-bold-line-figures.woff") format("woff");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: et-book-roman-old-style;
+  src: url("fonts/et-book/et-book-roman-old-style-figures.woff") format("woff");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+/* ------------------------------------------------------------------ 变量 */
+
+:root {
+  color-scheme: light dark;
+
+  /* Tufte 的纸感配色 */
+  --bg:        #fffff8;
+  --fg:        #111111;
+  --fg-muted:  #6b6b62;
+  --border:    #d8d8cc;
+  --code-bg:   #f4f4ea;
+  --accent:    #a00000;
+
+  /* 字体：et-book 管拉丁，中文回退到衬线宋体 */
+  --font-serif: et-book, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
+                "STSong", "SimSun", Palatino, "Palatino Linotype", Georgia, serif;
+  --font-mono:  "Iosevka Curly Slab", "Iosevka", "JetBrains Mono", Consolas,
+                "Liberation Mono", Menlo, Courier, "Noto Sans Mono CJK SC", monospace;
+
+  /* 版式 */
+  --text-width: 55%;   /* 正文列占 body 的比例 */
+  --note-shift: -60%;  /* 边注向右溢出的量 */
+  --note-width: 50%;
+
+  /* 字号 —— 这两项是最常需要微调的旋钮
+     代码用 Iosevka，它的 x-height 与字宽都小于常规等宽字体，
+     相同 font-size 下视觉偏小，所以这里比惯常的 .9rem 放大了一档。 */
+  --text-size: 1.4rem;    /* 正文：21px */
+  --code-size: 1.05rem;   /* 代码：15.75px */
+
+  /* 代码高亮 */
+  --hl-comment:  #8a8a80;
+  --hl-keyword:  #8b3fa8;
+  --hl-type:     #9a6a00;
+  --hl-string:   #2f8f46;
+  --hl-number:   #9a6a00;
+  --hl-function: #2b5fd9;
+  --hl-variable: #c0392b;
+  --hl-operator: #3a3a34;
+  --hl-alert:    #c8102e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg:       #151515;
+    --fg:       #dddddd;
+    --fg-muted: #8f8f8f;
+    --border:   #333333;
+    --code-bg:  #1e1e1e;
+    --accent:   #e8a0a0;
+
+    --hl-comment:  #6a6a6a;
+    --hl-keyword:  #c678dd;
+    --hl-type:     #e5c07b;
+    --hl-string:   #98c379;
+    --hl-number:   #d19a66;
+    --hl-function: #61afef;
+    --hl-variable: #e06c75;
+    --hl-operator: #abb2bf;
+    --hl-alert:    #ff6b6b;
+  }
+}
+
+/* ---------------------------------------------------- 无边注时加宽版心 */
+
+/* Tufte 把正文压在 55%，是为了把右侧 45% 留给边注。
+   没有边注的文章再留那块空间就是浪费，这里把它还回正文。
+   :has() 不支持的旧浏览器会自然回退到 :root 里的 55%，不会出错。 */
+body:not(:has(.sidenote, .marginnote)) {
+  --text-width: 62%;
+}
+
+/* ------------------------------------------------------------------ 基础 */
+
+html {
+  font-size: 15px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  width: 87.5%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 12.5%;
+  font-family: var(--font-serif);
+  background-color: var(--bg);
+  color: var(--fg);
+  counter-reset: sidenote-counter;
+  -webkit-font-smoothing: antialiased;
+  /* 窄版心下英文右边缘容易参差，交给浏览器断词。
+     中文不会触发连字符断词，不受影响。 */
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* 英文排版优化（渐进增强，旧浏览器忽略即可） */
+h1, h2, h3, h4 { text-wrap: balance; }
+p { text-wrap: pretty; }
+
+h1, h2, h3, h4, h5, h6 { font-weight: 400; }
+
+h1 {
+  font-size: 3.2rem;
+  line-height: 1;
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  font-size: 2.2rem;
+  line-height: 1;
+  margin-top: 2.1rem;
+  margin-bottom: 1.4rem;
+}
+
+h3 {
+  font-size: 1.7rem;
+  line-height: 1;
+  margin-top: 2rem;
+  margin-bottom: 1.4rem;
+}
+
+h4, h5, h6 {
+  font-size: 1.4rem;
+  line-height: 1;
+  margin-top: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+/* 正文列宽：文章与节都取直接子元素，覆盖 pandoc 的两种输出形态
+   （有标题层级时是 article > section > p，标题之前是 article > p） */
+:is(main, article, section) > :is(p, ul, ol, dl, blockquote, pre:not(.sourceCode), .table-wrapper, nav.toc) {
+  width: var(--text-width);
+}
+
+p, dl, ol, ul {
+  font-size: var(--text-size);
+  line-height: 2rem;
+}
+
+p {
+  margin-top: 1.4rem;
+  margin-bottom: 1.4rem;
+  vertical-align: baseline;
+}
+
+section > dl, section > ol, section > ul,
+article > dl, article > ol, article > ul {
+  width: 50%;
+  padding-left: 5%;
+}
+
+li:not(:first-child), dt:not(:first-child) { margin-top: .25rem; }
+
+hr {
+  display: block;
+  width: var(--text-width);
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 1.5em 0;
+  padding: 0;
+}
+
+/* ------------------------------------------------------------------ 链接 */
+
+a { color: inherit; }
+
+a:link,
+a:visited {
+  text-decoration: none;
+  /* Tufte 的下划线技巧：用 text-shadow 挖掉字母降部，比 text-decoration 精致 */
+  background-image:
+    linear-gradient(var(--bg), var(--bg)),
+    linear-gradient(var(--bg), var(--bg)),
+    linear-gradient(currentColor, currentColor);
+  background-size: .05em 1px, .05em 1px, 1px 1px;
+  background-repeat: no-repeat, no-repeat, repeat-x;
+  background-position: 0 93%, 100% 93%, 0 93%;
+  text-shadow:
+    .03em 0 var(--bg), -.03em 0 var(--bg), 0 .03em var(--bg), 0 -.03em var(--bg),
+    .06em 0 var(--bg), -.06em 0 var(--bg), .09em 0 var(--bg), -.09em 0 var(--bg),
+    .12em 0 var(--bg), -.12em 0 var(--bg), .15em 0 var(--bg), -.15em 0 var(--bg);
+}
+
+a:hover { color: var(--accent); }
+
+/* 代码块和标题里的链接不需要这套下划线 */
+pre a, code a, h1 a, h2 a, h3 a, h4 a,
+.site-nav a, .site-title, .tag, .toc a, .post-item h2 a {
+  background: none;
+  text-shadow: none;
+}
+
+/* ------------------------------------------------------------------ 引用 */
+
+blockquote {
+  font-size: 1.4rem;
+  margin-left: 0;
+  padding-left: 0;
+  border: 0;
+}
+
+blockquote p {
+  width: var(--text-width);
+  margin-right: 40px;
+}
+
+blockquote footer {
+  width: var(--text-width);
+  font-size: 1.1rem;
+  text-align: right;
+}
+
+div.epigraph { margin: 5em 0; }
+div.epigraph > blockquote { margin-top: 3em; margin-bottom: 3em; }
+div.epigraph > blockquote,
+div.epigraph > blockquote > p { font-style: italic; }
+div.epigraph > blockquote > footer { font-style: normal; }
+div.epigraph > blockquote > footer > cite { font-style: italic; }
+
+/* ------------------------------------------------------------------ 代码 */
+
+code, kbd, samp, pre > code {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 1.42;
+  -webkit-text-size-adjust: 100%;
+}
+
+:not(pre) > code {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: .05em .3em;
+  font-size: .94em;
+}
+
+.sidenote > code, .marginnote > code { font-size: .95rem; }
+
+h1 > code, h2 > code, h3 > code { font-size: .8em; }
+
+/* pandoc 的代码块：div.sourceCode > pre.sourceCode > code.sourceCode */
+div.sourceCode {
+  width: var(--text-width);
+  margin: 1.6rem 0;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+div.sourceCode pre {
+  margin: 0;
+  padding: .8rem 1rem;
+  overflow-x: auto;
+  white-space: pre;
+  font-size: var(--code-size);
+  line-height: 1.5;
+  tab-size: 4;
+}
+
+/* 无语法高亮的裸代码块 */
+pre:not(.sourceCode) {
+  margin: 1.6rem 0;
+  padding: .8rem 1rem;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  overflow-x: auto;
+  font-size: var(--code-size);
+  line-height: 1.5;
+}
+
+div.sourceCode pre::-webkit-scrollbar,
+pre:not(.sourceCode)::-webkit-scrollbar { height: 8px; }
+
+div.sourceCode pre::-webkit-scrollbar-thumb,
+pre:not(.sourceCode)::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+
+/* Skylighting / Pygments 的 token 类名 */
+code span.co, code span.cv, code span.do { color: var(--hl-comment); font-style: italic; }
+code span.cv { font-weight: 700; }
+code span.kw, code span.im, code span.cf { color: var(--hl-keyword); }
+code span.dt, code span.bu, code span.at, code span.ex { color: var(--hl-type); }
+code span.st, code span.ch, code span.ss { color: var(--hl-string); }
+code span.dv, code span.bn, code span.fl, code span.cn { color: var(--hl-number); }
+code span.fu { color: var(--hl-function); }
+code span.va, code span.sc, code span.vs { color: var(--hl-variable); }
+code span.op { color: var(--hl-operator); }
+code span.pp { color: var(--hl-function); }
+code span.ot, code span.in { color: var(--hl-operator); }
+code span.an { color: var(--hl-comment); font-weight: 700; font-style: italic; }
+code span.wa, code span.er, code span.al { color: var(--hl-alert); font-weight: 700; }
+
+/* ------------------------------------------------------------------ 数学 */
+
+/* 数学字体：必须是带 MATH table 的 OpenType Math 字体，否则括号拉伸、
+   根号尺寸、分式间距会失去数学排版参数，与字形来源割裂。
+   STIX Two Math 本地优先，其余按访客平台的常见数学字体回退。
+   末尾的 math 是 CSS 通用族，交给浏览器选它的默认数学字体。 */
+math {
+  font-family: "STIX Two Math", "Latin Modern Math", "Cambria Math",
+               "Noto Sans Math", math, "Noto Serif CJK SC", serif;
+  font-size: 1.05em;
+}
+
+/* 块级公式：与正文同宽，长公式横向滚动而不是撑破版心。
+   宽度在这里设，因为构建时已剥掉 pandoc 加的 <p> 包裹。 */
+math[display="block"] {
+  display: block;
+  width: var(--text-width);
+  margin: 1.6rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* ------------------------------------------------------------------ 表格 */
+
+.table-wrapper {
+  width: var(--text-width);
+  margin: 1.6rem 0;
+  overflow-x: auto;
+}
+
+.table-wrapper table { margin: 0; }
+
+table {
+  border-collapse: collapse;
+  font-size: 1.15rem;
+  line-height: 1.5;
+}
+
+th, td {
+  border-bottom: 1px solid var(--border);
+  padding: .35em .7em .35em 0;
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  border-bottom: 2px solid var(--border);
+  font-weight: 400;
+}
+
+/* ------------------------------------------------------------------ 图片 */
+
+img { max-width: 100%; height: auto; }
+
+figure {
+  max-width: var(--text-width);
+  margin: 2em 0;
+  padding: 0;
+}
+
+figcaption {
+  float: right;
+  clear: right;
+  width: 40%;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+figure.fullwidth { max-width: 90%; }
+figure.fullwidth figcaption { margin-right: 24%; }
+div.fullwidth, table.fullwidth { width: 100%; }
+
+/* --------------------------------------------------------- 边注（sidenote） */
+
+.marginnote, .sidenote {
+  float: right;
+  clear: right;
+  margin-right: var(--note-shift);
+  width: var(--note-width);
+  margin-top: .3rem;
+  margin-bottom: 0;
+  font-size: 1.1rem;
+  line-height: 1.35;
+  vertical-align: baseline;
+  position: relative;
+}
+
+.sidenote-number { counter-increment: sidenote-counter; }
+
+.sidenote-number:after,
+.sidenote:before {
+  font-family: et-book-roman-old-style;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.sidenote-number:after {
+  content: counter(sidenote-counter);
+  font-size: 1rem;
+  top: -.5rem;
+  left: .1rem;
+}
+
+.sidenote:before {
+  content: counter(sidenote-counter) " ";
+  font-size: 1rem;
+  top: -.5rem;
+}
+
+blockquote .marginnote,
+blockquote .sidenote {
+  margin-right: -82%;
+  min-width: 59%;
+  text-align: left;
+}
+
+input.margin-toggle { display: none; }
+
+label.sidenote-number { display: inline-block; max-height: 2rem; }
+
+label.margin-toggle:not(.sidenote-number) { display: none; }
+
+/* ------------------------------------------------------- 站点结构（页头页脚） */
+
+.site-header {
+  width: var(--text-width);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
+}
+
+.site-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--fg);
+}
+
+.site-title:hover { color: var(--accent); }
+
+.site-nav {
+  font-size: 1.1rem;
+  display: flex;
+  gap: 1.2rem;
+}
+
+.site-nav a { color: var(--fg-muted); }
+
+.site-nav a:hover { color: var(--accent); }
+
+.site-footer {
+  width: var(--text-width);
+  margin-top: 6rem;
+  padding-top: 1.2rem;
+  padding-bottom: 4rem;
+  border-top: 1px solid var(--border);
+  font-size: 1.05rem;
+  color: var(--fg-muted);
+}
+
+.site-footer p { font-size: 1.05rem; line-height: 1.6; margin: 0; }
+
+.site-footer a { color: var(--fg-muted); }
+
+/* 版权页：注明版式与字体的来源（MIT / OFL 要求保留署名） */
+.site-footer .colophon {
+  margin-top: .6em;
+  font-size: .92rem;
+  line-height: 1.55;
+  color: var(--fg-muted);
+  opacity: .85;
+}
+
+/* ------------------------------------------------------------- 文章页 */
+
+.post-header {
+  width: var(--text-width);
+  margin-bottom: 3rem;
+}
+
+.post-header h1 { margin-top: 1rem; margin-bottom: .6rem; }
+
+.post-meta {
+  font-size: 1.1rem;
+  color: var(--fg-muted);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .6em;
+}
+
+.tag {
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 .6em;
+  font-size: .95rem;
+  font-style: normal;
+  color: var(--fg-muted);
+  background: none;
+}
+
+.tag:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ------------------------------------------------------------- 列表页 */
+
+.post-item {
+  width: var(--text-width);
+  margin-bottom: 3.2rem;
+}
+
+.post-item h2 {
+  font-size: 1.9rem;
+  font-style: normal;
+  margin: 0 0 .3rem;
+  line-height: 1.15;
+}
+
+.post-item h2 a { color: var(--fg); }
+
+.post-item h2 a:hover { color: var(--accent); }
+
+.post-item .summary {
+  margin-top: .7rem;
+  color: var(--fg-muted);
+}
+
+/* --------------------------------------------------------- 归档 / 标签页 */
+
+.page-title {
+  width: var(--text-width);
+  font-size: 2.6rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.archive-year {
+  width: var(--text-width);
+  font-size: 1.8rem;
+  margin-top: 2.5rem;
+  margin-bottom: .5rem;
+}
+
+.archive-list {
+  width: var(--text-width);
+  list-style: none;
+  padding-left: 0;
+}
+
+.archive-list li {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  display: flex;
+  gap: .8em;
+  align-items: baseline;
+}
+
+.archive-list time {
+  color: var(--fg-muted);
+  font-family: et-book-roman-old-style;
+  font-size: 1.1rem;
+  flex: none;
+  min-width: 3.2em;
+}
+
+.tag-cloud {
+  width: var(--text-width);
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  font-size: 1.15rem;
+}
+
+.tag-cloud .tag { font-size: 1.1rem; }
+
+.tag-cloud .tag span { color: var(--fg-muted); }
+
+/* --------------------------------------------------------------- 目录 */
+
+nav.toc {
+  margin-bottom: 3rem;
+  font-size: 1.15rem;
+}
+
+.toc-title {
+  font-size: 1.1rem;
+  color: var(--fg-muted);
+  margin: 0 0 .4rem;
+}
+
+nav.toc ul {
+  width: 100%;
+  margin: 0;
+  padding-left: 0;
+  list-style: none;
+  font-size: 1.15rem;
+  line-height: 1.7;
+}
+
+nav.toc li { margin: 0; }
+
+nav.toc .toc-level-3 { padding-left: 1.6em; font-size: 1.05rem; }
+
+nav.toc a { color: var(--fg-muted); }
+
+nav.toc a:hover { color: var(--accent); }
+
+/* ---------------------------------------------------------- 旧式数字 */
+
+.numeral, .oldstyle { font-family: et-book-roman-old-style; }
+
+span.newthought {
+  font-variant: small-caps;
+  font-size: 1.2em;
+}
+
+/* ---------------------------------------------------------- 窄屏适配 */
+
+@media (max-width: 760px) {
+  body {
+    width: 84%;
+    padding-left: 8%;
+    padding-right: 8%;
+  }
+
+  :is(main, article, section) > :is(p, ul, ol, dl, blockquote, pre:not(.sourceCode), .table-wrapper, nav.toc),
+  :is(article, section) > :is(dl, ol, ul),
+  blockquote p,
+  blockquote footer,
+  math[display="block"],
+  div.sourceCode,
+  .site-header, .site-footer, .post-header, .post-item,
+  .page-title, .archive-year, .archive-list, .tag-cloud {
+    width: 100%;
+  }
+
+  hr { width: 100%; }
+
+  figure { max-width: 90%; }
+  figcaption, figure.fullwidth figcaption { float: none; width: auto; margin-right: 0; }
+
+  h1 { font-size: 2.4rem; }
+  h2 { font-size: 1.8rem; }
+
+  /* 边注默认隐藏，点击编号后展开 */
+  label.margin-toggle:not(.sidenote-number) { display: inline; }
+
+  .marginnote, .sidenote { display: none; }
+
+  .margin-toggle:checked + .sidenote,
+  .margin-toggle:checked + .marginnote {
+    display: block;
+    float: left;
+    left: 1rem;
+    clear: both;
+    width: 95%;
+    margin: 1rem 2.5%;
+    vertical-align: baseline;
+    position: relative;
+  }
+
+  label { cursor: pointer; }
+
+  .table-wrapper { width: 100%; }
+}
+
+/* ------------------------------------------------------------- 打印 */
+
+@media print {
+  :root {
+    --bg: #fff;
+    --fg: #000;
+    --fg-muted: #444;
+    --border: #bbb;
+    --code-bg: #f5f5f5;
+    --accent: #000;
+  }
+
+  html { font-size: 11pt; }
+
+  body { width: 100%; max-width: none; padding-left: 0; }
+
+  .site-header, .site-footer { display: none; }
+
+  div.sourceCode, pre:not(.sourceCode) { break-inside: avoid; }
+
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: .8em;
+    color: #555;
+  }
+}
