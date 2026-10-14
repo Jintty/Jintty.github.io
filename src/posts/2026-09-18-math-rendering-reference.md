@@ -15,6 +15,8 @@ A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \qquad
 \vec{v} = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}
 $$
 
+### The matrix product
+
 Written elementwise:
 
 $$

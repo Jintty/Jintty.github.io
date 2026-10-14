@@ -42,18 +42,14 @@ const PANDOC    = findPandoc();
 
 const FROM = 'gfm+tex_math_dollars';
 
-// 脚注 -> Tufte 边注。filter 缺失时静默降级为普通脚注。
-const FILTER   = join(ROOT, 'filters', 'sidenotes.lua');
-const hasFilter = existsSync(FILTER);
-
-// --section-divs 是 Tufte 布局的前提：正文要被包进 <section>，
-// CSS 才能用 `section > p` 把正文限制在 55% 宽度，把右侧留给边注。
+// --section-divs 把每个标题下的内容包进 <section>，语义更清楚，
+// 目录提取也依赖这个结构（标题 id 落在 <section> 上）。
+// 不再加载边注 filter：脚注保持 pandoc 默认的文末位置。
 const TO = [
   '-t', 'html',
   '--mathml',
   '--wrap=none',
   '--section-divs',
-  ...(hasFilter ? [`--lua-filter=${FILTER}`] : []),
 ];
 
 /* ------------------------------------------------------------ 小工具函数 */

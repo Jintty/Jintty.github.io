@@ -35,12 +35,11 @@ PORT=8123 node build.mjs --serve
 ```
 blog/
 ├── site.json                 站点配置（标题、作者、URL、语言）
-├── build.mjs                 构建脚本
-├── filters/sidenotes.lua     把脚注转成 Tufte 式边注（Pandoc Lua filter）
+├── build.mjs                 构建脚本（零 npm 依赖）
 ├── templates/layout.html     页面骨架，纯 HTML + {{占位符}}
 ├── assets/
 │   ├── style.css             全部样式（明暗主题 / 代码高亮 / MathML）
-│   └── fonts/                自托管字体（Literata 正文 + JetBrains Mono 代码）
+│   └── fonts/                自托管字体（含候选，见文末 Credits）
 ├── src/posts/                文章（Markdown）
 └── docs/                     构建产物，GitHub Pages 从这里发布
 ```
@@ -82,17 +81,15 @@ $$
 
 输出的是 MathML，浏览器原生渲染。
 
-### 脚注 = 边注
+### 脚注
 
-普通的 Markdown 脚注会被自动转换成 Tufte 式的右侧边注：
+标准 Markdown 脚注，渲染在文章末尾：
 
 ```markdown
 MathML reached Baseline in 2025[^baseline].
 
 [^baseline]: Baseline 表示所有主流浏览器的最新版本都支持。
 ```
-
-**文章如果含边注，正文会自动收窄到 55% 给边注让位；没有边注则放宽到 62%。** 这是 `style.css` 里一条 `:has()` 规则实现的，不需要任何构建期判断。
 
 ### 图片
 
@@ -132,18 +129,23 @@ MathML reached Baseline in 2025[^baseline].
 
 **[Tufte CSS](https://edwardtufte.github.io/tufte-css/)** — Copyright (c) 2014 Dave Liepmann, MIT License.
 
-`assets/style.css` 的布局骨架（正文 55% 版心、`float` 边注、`counter` 编号、窄屏 checkbox 折叠）来自 Tufte CSS。在此基础上做了四项修改：颜色改为 CSS 变量以支持明暗主题、字体栈补上中文衬线、补代码高亮与 MathML 样式、补博客所需的站点结构。完整说明见 `style.css` 头部注释。
+`assets/style.css` 保留了 Tufte CSS 的字号层级（3.2 / 2.2 / 1.7 / 1.4rem）、衬线正文和克制的配色，但**布局已改为单栏**：边注系统（`.sidenote` / `.marginnote` / `margin-toggle`）被整体移除，因为它把正文锁死在 55% 宽度，而这个站点用不到边注。其余改动（CSS 变量明暗主题、代码高亮、MathML、站点结构）见 `style.css` 头部注释。
 
 ### 字体
 
 | 字体 | 用途 | 许可 | 分发方式 |
 |---|---|---|---|
-| **[Literata](https://github.com/googlefonts/literata)** | 正文 | SIL OFL 1.1<br>Copyright 2017 The Literata Project Authors | 自托管于 `assets/fonts/literata/` |
-| **[JetBrains Mono](https://github.com/JetBrains/JetBrainsMono)** | 代码 | SIL OFL 1.1<br>Copyright 2020 The JetBrains Mono Project Authors | 自托管于 `assets/fonts/jetbrains-mono/` |
+| **[IBM Plex Serif](https://github.com/IBM/plex)** | 正文（当前） | SIL OFL 1.1<br>Copyright © 2017 IBM Corp. | 自托管于 `assets/fonts/ibm-plex-serif/` |
+| **[Source Code Pro](https://github.com/adobe-fonts/source-code-pro)** | 代码（当前） | SIL OFL 1.1<br>Copyright 2010, 2012 Adobe | 自托管于 `assets/fonts/source-code-pro/` |
+| **[Literata](https://github.com/googlefonts/literata)** | 正文（候选） | SIL OFL 1.1<br>Copyright 2017 The Literata Project Authors | 自托管于 `assets/fonts/literata/` |
+| **[JetBrains Mono](https://github.com/JetBrains/JetBrainsMono)** | 代码（候选） | SIL OFL 1.1<br>Copyright 2020 The JetBrains Mono Project Authors | 自托管于 `assets/fonts/jetbrains-mono/` |
+| **[IBM Plex Mono](https://github.com/IBM/plex)** | 代码（候选） | SIL OFL 1.1<br>Copyright © 2017 IBM Corp. | 自托管于 `assets/fonts/ibm-plex-mono/` |
 | **[STIX Two Math](https://github.com/stipub/stixfonts)** | 数学 | SIL OFL 1.1<br>Copyright 2001–2021 The STIX Fonts Project Authors | 仅按名称引用，**不随站点分发** |
 | Noto Serif CJK SC | 中文回退 | — | 仅按名称引用，不随站点分发 |
 
-Literata 和 JetBrains Mono 因为自托管并会部署出去，OFL 的署名在 CSS 头部和页面页脚都保留了。两者都是**拉丁子集**（每个文件约 20–23 KB），不含汉字——中文会自动回退到字体栈里后面的系统衬线字体。
+自托管字体因为会随站点部署出去，OFL 的署名在 CSS 头部和页面页脚都保留了。它们都是**拉丁子集**（每个文件 11–23 KB），不含汉字——中文会自动回退到字体栈里后面的系统衬线字体。
+
+**候选字体不会被访客下载**：浏览器只请求 `--font-serif` / `--font-mono` 实际引用的字体。`style.css` 里那些未被引用的 `@font-face` 声明不会触发任何网络请求。切换字体只需改 `:root` 里那两行。
 
 ### 数学渲染
 

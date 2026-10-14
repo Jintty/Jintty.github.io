@@ -34,6 +34,7 @@
   <p class="toc-title">Contents</p>
   <ul>
     <li class="toc-level-2"><a href="#matrices-and-vectors">Matrices and vectors</a></li>
+    <li class="toc-level-3"><a href="#the-matrix-product">The matrix product</a></li>
     <li class="toc-level-2"><a href="#determinants">Determinants</a></li>
     <li class="toc-level-2"><a href="#piecewise-definitions-and-limits">Piecewise definitions and limits</a></li>
     <li class="toc-level-2"><a href="#inline-math">Inline math</a></li>
@@ -52,10 +53,13 @@
 A = \begin{pmatrix} 1 &amp; 2 \\ 3 &amp; 4 \end{pmatrix}, \qquad
 \vec{v} = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}
 </annotation></semantics></math>
+<section id="the-matrix-product" class="level3">
+<h3>The matrix product</h3>
 <p>Written elementwise:</p>
 <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><msub><mi>b</mi><mrow><mi>k</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">
 (AB)_{ij} = \sum_{k=1}^{n} a_{ik} b_{kj}
 </annotation></semantics></math>
+</section>
 </section>
 <section id="determinants" class="level2">
 <h2>Determinants</h2>
@@ -167,11 +171,18 @@ x^2 &amp; \text{if } x \geq 0 \\
 </section>
 <section id="margin-notes" class="level2">
 <h2>Margin notes</h2>
-<p>MathML has rendered natively in Chromium since version 109<label for="sn-1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-1" class="margin-toggle"/><span class="sidenote">Chrome 109 shipped in January 2023, which is when MathML Core became usable in the majority browser.</span>, and reached Baseline "widely available" in July 2025<label for="sn-2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="sn-2" class="margin-toggle"/><span class="sidenote">Baseline status means every current version of the major browsers supports the feature.</span>. That is what makes the no-JavaScript approach viable rather than merely aspirational.</p>
+<p>MathML has rendered natively in Chromium since version 109<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, and reached Baseline "widely available" in July 2025<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. That is what makes the no-JavaScript approach viable rather than merely aspirational.</p>
 </section>
 <section id="images" class="level2">
 <h2>Images</h2>
 <p><img src="example.svg" alt="A schematic curve" /></p>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Chrome 109 shipped in January 2023, which is when MathML Core became usable in the majority browser.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Baseline status means every current version of the major browsers supports the feature.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </article>
@@ -179,7 +190,7 @@ x^2 &amp; \text{if } x \geq 0 \\
 
 <footer class="site-footer">
   <p>© 2026 Jintty · <a href="/feed.xml">RSS</a></p>
-  <p class="colophon">Built with <a href="https://pandoc.org/">Pandoc</a>. Layout after <a href="https://edwardtufte.github.io/tufte-css/">Tufte CSS</a> by Dave Liepmann (MIT). Set in <a href="https://github.com/googlefonts/literata">Literata</a>, code in <a href="https://github.com/JetBrains/JetBrainsMono">JetBrains Mono</a>, math in STIX Two Math.</p>
+  <p class="colophon">Built with <a href="https://pandoc.org/">Pandoc</a>. Layout after <a href="https://edwardtufte.github.io/tufte-css/">Tufte CSS</a> by Dave Liepmann (MIT). Set in <a href="https://github.com/IBM/plex">IBM Plex Serif</a>, code in <a href="https://github.com/adobe-fonts/source-code-pro">Source Code Pro</a>, math in STIX Two Math.</p>
 </footer>
 
 </body>

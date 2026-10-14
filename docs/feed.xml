@@ -22,10 +22,13 @@
 A = \begin{pmatrix} 1 &amp;amp; 2 \\ 3 &amp;amp; 4 \end{pmatrix}, \qquad
 \vec{v} = \begin{pmatrix} 1 \\ 2 \\ 3 \end{pmatrix}
 &lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;
+&lt;section id=&quot;the-matrix-product&quot; class=&quot;level3&quot;&gt;
+&lt;h3&gt;The matrix product&lt;/h3&gt;
 &lt;p&gt;Written elementwise:&lt;/p&gt;
 &lt;math display=&quot;block&quot; xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mo stretchy=&quot;false&quot; form=&quot;prefix&quot;&gt;(&lt;/mo&gt;&lt;mi&gt;A&lt;/mi&gt;&lt;mi&gt;B&lt;/mi&gt;&lt;msub&gt;&lt;mo stretchy=&quot;false&quot; form=&quot;postfix&quot;&gt;)&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;j&lt;/mi&gt;&lt;/mrow&gt;&lt;/msub&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;munderover&gt;&lt;mo&gt;∑&lt;/mo&gt;&lt;mrow&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/mrow&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/munderover&gt;&lt;msub&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mrow&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;/mrow&gt;&lt;/msub&gt;&lt;msub&gt;&lt;mi&gt;b&lt;/mi&gt;&lt;mrow&gt;&lt;mi&gt;k&lt;/mi&gt;&lt;mi&gt;j&lt;/mi&gt;&lt;/mrow&gt;&lt;/msub&gt;&lt;/mrow&gt;&lt;annotation encoding=&quot;application/x-tex&quot;&gt;
 (AB)_{ij} = \sum_{k=1}^{n} a_{ik} b_{kj}
 &lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;
+&lt;/section&gt;
 &lt;/section&gt;
 &lt;section id=&quot;determinants&quot; class=&quot;level2&quot;&gt;
 &lt;h2&gt;Determinants&lt;/h2&gt;
@@ -137,11 +140,18 @@ x^2 &amp;amp; \text{if } x \geq 0 \\
 &lt;/section&gt;
 &lt;section id=&quot;margin-notes&quot; class=&quot;level2&quot;&gt;
 &lt;h2&gt;Margin notes&lt;/h2&gt;
-&lt;p&gt;MathML has rendered natively in Chromium since version 109&lt;label for=&quot;sn-1&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;sn-1&quot; class=&quot;margin-toggle&quot;/&gt;&lt;span class=&quot;sidenote&quot;&gt;Chrome 109 shipped in January 2023, which is when MathML Core became usable in the majority browser.&lt;/span&gt;, and reached Baseline &quot;widely available&quot; in July 2025&lt;label for=&quot;sn-2&quot; class=&quot;margin-toggle sidenote-number&quot;&gt;&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;sn-2&quot; class=&quot;margin-toggle&quot;/&gt;&lt;span class=&quot;sidenote&quot;&gt;Baseline status means every current version of the major browsers supports the feature.&lt;/span&gt;. That is what makes the no-JavaScript approach viable rather than merely aspirational.&lt;/p&gt;
+&lt;p&gt;MathML has rendered natively in Chromium since version 109&lt;a href=&quot;#fn1&quot; class=&quot;footnote-ref&quot; id=&quot;fnref1&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;, and reached Baseline &quot;widely available&quot; in July 2025&lt;a href=&quot;#fn2&quot; class=&quot;footnote-ref&quot; id=&quot;fnref2&quot; role=&quot;doc-noteref&quot;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;. That is what makes the no-JavaScript approach viable rather than merely aspirational.&lt;/p&gt;
 &lt;/section&gt;
 &lt;section id=&quot;images&quot; class=&quot;level2&quot;&gt;
 &lt;h2&gt;Images&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&quot;example.svg&quot; alt=&quot;A schematic curve&quot; /&gt;&lt;/p&gt;
+&lt;/section&gt;
+&lt;section id=&quot;footnotes&quot; class=&quot;footnotes footnotes-end-of-document&quot; role=&quot;doc-endnotes&quot;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn1&quot;&gt;&lt;p&gt;Chrome 109 shipped in January 2023, which is when MathML Core became usable in the majority browser.&lt;a href=&quot;#fnref1&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn2&quot;&gt;&lt;p&gt;Baseline status means every current version of the major browsers supports the feature.&lt;a href=&quot;#fnref2&quot; class=&quot;footnote-back&quot; role=&quot;doc-backlink&quot;&gt;↩︎&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
 &lt;/section&gt;
 </content>
   </entry>
