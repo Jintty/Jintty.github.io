@@ -14,35 +14,59 @@
      4. 补博客所需的站点结构（页头、归档、标签、目录、页脚）
 
    字体与来源：
-     ET Book            自托管（assets/fonts/et-book/），随 Tufte CSS 以 MIT 发布
+     Literata           自托管（assets/fonts/literata/）
+                        Copyright 2017 The Literata Project Authors
+                        SIL Open Font License 1.1
+     JetBrains Mono     自托管（assets/fonts/jetbrains-mono/）
+                        Copyright 2020 The JetBrains Mono Project Authors
+                        SIL Open Font License 1.1
      STIX Two Math      仅按名称引用，不随站点分发
                         Copyright 2001–2021 The STIX Fonts Project Authors
                         SIL Open Font License 1.1
-     Iosevka Curly Slab 仅按名称引用，不随站点分发
      Noto Serif CJK SC  仅按名称引用，不随站点分发
+
+   自托管字体均为拉丁子集（每个约 20–23 KB），不包含汉字，
+   所以中文会自动回退到字体栈里后面的系统字体。
    =========================================================================== */
 
 /* ------------------------------------------------------------------ 字体 */
 
 @font-face {
-  font-family: et-book;
-  src: url("fonts/et-book/et-book-roman-line-figures.woff") format("woff");
+  font-family: Literata;
+  src: url("fonts/literata/literata-latin-400-normal.woff2") format("woff2");
   font-weight: 400; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: et-book;
-  src: url("fonts/et-book/et-book-display-italic-old-style-figures.woff") format("woff");
+  font-family: Literata;
+  src: url("fonts/literata/literata-latin-400-italic.woff2") format("woff2");
   font-weight: 400; font-style: italic; font-display: swap;
 }
 @font-face {
-  font-family: et-book;
-  src: url("fonts/et-book/et-book-bold-line-figures.woff") format("woff");
+  font-family: Literata;
+  src: url("fonts/literata/literata-latin-700-normal.woff2") format("woff2");
   font-weight: 700; font-style: normal; font-display: swap;
 }
 @font-face {
-  font-family: et-book-roman-old-style;
-  src: url("fonts/et-book/et-book-roman-old-style-figures.woff") format("woff");
+  font-family: Literata;
+  src: url("fonts/literata/literata-latin-700-italic.woff2") format("woff2");
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+
+/* JetBrains Mono — 代码。为字符区分度设计：0/O、1/l/I 形状刻意拉开。 */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono/jetbrains-mono-latin-400-normal.woff2") format("woff2");
   font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono/jetbrains-mono-latin-400-italic.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("fonts/jetbrains-mono/jetbrains-mono-latin-700-normal.woff2") format("woff2");
+  font-weight: 700; font-style: normal; font-display: swap;
 }
 
 /* ------------------------------------------------------------------ 变量 */
@@ -58,11 +82,12 @@
   --code-bg:   #f4f4ea;
   --accent:    #a00000;
 
-  /* 字体：et-book 管拉丁，中文回退到衬线宋体 */
-  --font-serif: et-book, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
-                "STSong", "SimSun", Palatino, "Palatino Linotype", Georgia, serif;
-  --font-mono:  "Iosevka Curly Slab", "Iosevka", "JetBrains Mono", Consolas,
-                "Liberation Mono", Menlo, Courier, "Noto Sans Mono CJK SC", monospace;
+  /* 字体：自托管字体只覆盖拉丁，中文回退到后面的系统衬线。
+     链路末端永远是通用族，所以任何一环加载失败都能自然降级。 */
+  --font-serif: Literata, "Songti SC", "Noto Serif CJK SC", "Source Han Serif SC",
+                "STSong", "SimSun", Georgia, serif;
+  --font-mono:  "JetBrains Mono", Consolas, "Liberation Mono", Menlo, Courier,
+                "Noto Sans Mono CJK SC", monospace;
 
   /* 版式 */
   --text-width: 55%;   /* 正文列占 body 的比例 */
@@ -70,8 +95,8 @@
   --note-width: 50%;
 
   /* 字号 —— 这两项是最常需要微调的旋钮
-     代码用 Iosevka，它的 x-height 与字宽都小于常规等宽字体，
-     相同 font-size 下视觉偏小，所以这里比惯常的 .9rem 放大了一档。 */
+     注意：CSS 的 px 是逻辑单位，显示器的 scale（如 niri 的 1.25）会在其之上
+     再放大一次，所以判断字号应在 100% 缩放下进行。 */
   --text-size: 1.4rem;    /* 正文：21px */
   --code-size: 1.05rem;   /* 代码：15.75px */
 
@@ -437,7 +462,7 @@ div.fullwidth, table.fullwidth { width: 100%; }
 
 .sidenote-number:after,
 .sidenote:before {
-  font-family: et-book-roman-old-style;
+  font-variant-numeric: oldstyle-nums;
   position: relative;
   vertical-align: baseline;
 }
@@ -608,7 +633,7 @@ label.margin-toggle:not(.sidenote-number) { display: none; }
 
 .archive-list time {
   color: var(--fg-muted);
-  font-family: et-book-roman-old-style;
+  font-variant-numeric: oldstyle-nums;
   font-size: 1.1rem;
   flex: none;
   min-width: 3.2em;
@@ -658,7 +683,7 @@ nav.toc a:hover { color: var(--accent); }
 
 /* ---------------------------------------------------------- 旧式数字 */
 
-.numeral, .oldstyle { font-family: et-book-roman-old-style; }
+.numeral, .oldstyle { font-variant-numeric: oldstyle-nums; }
 
 span.newthought {
   font-variant: small-caps;

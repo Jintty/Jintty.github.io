@@ -40,7 +40,7 @@ blog/
 ├── templates/layout.html     页面骨架，纯 HTML + {{占位符}}
 ├── assets/
 │   ├── style.css             全部样式（明暗主题 / 代码高亮 / MathML）
-│   └── fonts/et-book/        正文字体，自托管
+│   └── fonts/                自托管字体（Literata 正文 + JetBrains Mono 代码）
 ├── src/posts/                文章（Markdown）
 └── docs/                     构建产物，GitHub Pages 从这里发布
 ```
@@ -136,14 +136,14 @@ MathML reached Baseline in 2025[^baseline].
 
 ### 字体
 
-| 字体 | 许可 | 分发方式 |
-|---|---|---|
-| **ET Book** | MIT（随 Tufte CSS 发布） | 自托管于 `assets/fonts/et-book/` |
-| **[STIX Two Math](https://github.com/stipub/stixfonts)** | SIL OFL 1.1<br>Copyright 2001–2021 The STIX Fonts Project Authors | 仅按名称引用，**不随站点分发** |
-| Iosevka Curly Slab | — | 仅按名称引用，不随站点分发 |
-| Noto Serif CJK SC | — | 仅按名称引用，不随站点分发 |
+| 字体 | 用途 | 许可 | 分发方式 |
+|---|---|---|---|
+| **[Literata](https://github.com/googlefonts/literata)** | 正文 | SIL OFL 1.1<br>Copyright 2017 The Literata Project Authors | 自托管于 `assets/fonts/literata/` |
+| **[JetBrains Mono](https://github.com/JetBrains/JetBrainsMono)** | 代码 | SIL OFL 1.1<br>Copyright 2020 The JetBrains Mono Project Authors | 自托管于 `assets/fonts/jetbrains-mono/` |
+| **[STIX Two Math](https://github.com/stipub/stixfonts)** | 数学 | SIL OFL 1.1<br>Copyright 2001–2021 The STIX Fonts Project Authors | 仅按名称引用，**不随站点分发** |
+| Noto Serif CJK SC | 中文回退 | — | 仅按名称引用，不随站点分发 |
 
-ET Book 因为自托管并会部署出去，所以 MIT 的署名在 CSS 头部和页面页脚都保留了。
+Literata 和 JetBrains Mono 因为自托管并会部署出去，OFL 的署名在 CSS 头部和页面页脚都保留了。两者都是**拉丁子集**（每个文件约 20–23 KB），不含汉字——中文会自动回退到字体栈里后面的系统衬线字体。
 
 ### 数学渲染
 
